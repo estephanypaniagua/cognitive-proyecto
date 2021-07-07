@@ -3,27 +3,36 @@ version: "3"
 services:
   cognitive_project:
     build:
-      context: ./backend
+      context: ./src
       dockerfile: Dockerfile
-    image: cognitive_project
-    environment:
-      DB_URI: "mysql://root:pass_db@cognitive_project_db/prueba"
     container_name: cognitive_project
-    restart: unless-stopped
+    environment:
+      DB_URI: "mysql+pymysql://root:pass_db@cognitive_project_db/prueba"
+    image: cognitive_project
     ports:
       - "5000:5000"
+    restart: unless-stopped
 
   cognitive_project_db:
-    build:
-      context: ./database
-      dockerfile: Dockerfile
-    image: cognitive_project_db
     container_name: cognitive_project_db
-    restart: unless-stopped
     environment:
+      - MYSQL_DATABASE=prueba
       - MYSQL_ROOT_PASSWORD=pass_db
+    image: mysql:8.0.25
+    restart: unless-stopped
     volumes:
       - dbdata:/var/lib/mysql
+
+  cognitive_project_db_pma:
+    container_name: cognitive_project_db_pma
+    image: phpmyadmin/phpmyadmin:5.1.1
+    environment:
+      - PMA_HOST=cognitive_project_db
+      - PMA_USER=root
+      - PMA_PASSWORD=pass_db
+    ports:
+      - "8080:80"
+    restart: unless-stopped
 
 volumes:
   dbdata:

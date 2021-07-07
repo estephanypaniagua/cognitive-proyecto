@@ -1,6 +1,8 @@
 {
-    "python.pythonPath": ".venv/bin/python",
-    "python.analysis.extraPaths": [
-        "./backend"
-    ]
+  "python.pythonPath": "./src/.venv/bin/python",
+  "python.analysis.extraPaths": ["./backend"],
+
+  "[html]": {
+    "editor.formatOnSave": false,
+  },
 }

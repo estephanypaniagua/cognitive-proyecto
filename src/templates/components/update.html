@@ -1,0 +1,72 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container">
+  <section class="content">
+    <div class="box box-info">
+      <div class="box-header with-border">
+        <center>
+          <h3 class="box-title">Actualizar contacto</h3>
+        </center>
+      </div>
+    </div>
+
+    <form class="form-horizontal" method="POST" action="/usuario/updateusuario">
+      {% for row in data %}
+      <div class="box-body">
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Nombre</label>
+          <div class="col-sm-10">
+            <input
+              name="nombre"
+              value="{{ row[1] }}"
+              type="text"
+              class="form-control"
+              placeholder="Nombre"
+              autocomplete="off"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Telefono</label>
+          <div class="col-sm-10">
+            <input
+              name="telefono"
+              value="{{ row[2] }}"
+              type="text"
+              class="form-control"
+              placeholder="Telefono"
+              autocomplete="off"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Email</label>
+          <div class="col-sm-10">
+            <input
+              name="email"
+              value="{{ row[3] }}"
+              type="text"
+              class="form-control"
+              placeholder="Email"
+              autocomplete="off"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="box-footer">
+          <a href="/usuario/"> <button type="button" class="btn btn-default">Cancel</button> </a>
+          <input type="submit" name="update" class="btn btn-info pull-right" value="Update" />
+        </div>
+      </div>
+      {% endfor %}
+    </form>
+  </section>
+</div>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+body {
+  padding-top: 50px;
+  background-image: url("../assets/landing.png");
+  background-size: cover;
+  /* background-repeat: no-repeat; */
+}
+
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+
+.paper {
+  background-color: white;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 10rem;
+  margin-top: 5rem;
+  border-radius: 0.5rem;
+  border: 1px solid;
+}
+
+.item {
+  width: 15rem;
+}
