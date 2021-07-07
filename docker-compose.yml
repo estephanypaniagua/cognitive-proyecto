@@ -1,22 +1,24 @@
-version: '3'
+version: "3"
 
 services:
-  proyecto:
+  cognitive_project:
     build:
-      context: ./src
+      context: ./backend
       dockerfile: Dockerfile
-    image: proyecto
-    container_name: proyecto
+    image: cognitive_project
+    environment:
+      DB_URI: "mysql://root:pass_db@cognitive_project_db/prueba"
+    container_name: cognitive_project
     restart: unless-stopped
     ports:
       - "5000:5000"
 
-  proyecto_db:
+  cognitive_project_db:
     build:
-        context: ./database
-        dockerfile: Dockerfile
-    image: proyecto_db
-    container_name: proyecto_db
+      context: ./database
+      dockerfile: Dockerfile
+    image: cognitive_project_db
+    container_name: cognitive_project_db
     restart: unless-stopped
     environment:
       - MYSQL_ROOT_PASSWORD=pass_db

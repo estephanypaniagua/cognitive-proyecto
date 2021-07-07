@@ -7,10 +7,12 @@ DEBUG = True
 BASE_DIR = path.abspath(path.dirname(__file__))
 
 # Define the database - we are working with
-# SQLite for this example
 # SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'app.db')
+# "sqlite:///D:/Cursos2021-1/Cognitive/414/database.db")
 SQLALCHEMY_DATABASE_URI = environ.get(
-    "DB_URI", 'sqlite:///' + path.join(BASE_DIR, 'app.db'))
+    "DB_URI",
+    'sqlite:///' + path.join(BASE_DIR, 'database.db')
+)
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 DATABASE_CONNECT_OPTIONS = {}

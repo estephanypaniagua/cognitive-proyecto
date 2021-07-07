@@ -1,21 +1,17 @@
 from flask import Flask, render_template, redirect, url_for
 from flask_bootstrap import Bootstrap
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
+from werkzeug.security import generate_password_hash, check_password_hash
 from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Email, Length
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
 from config import PORT
 
 app = Flask(__name__)
 
 app.config.from_object("config")
-# app.config['SECRET_KEY'] = 'Thisissupposedtobesecret'
-# app.config['SQLALCHEMY_DATABASE_URI'] = environ.get(
-#     "DB_URI", "sqlite:///D:/Cursos2021-1/Cognitive/414/database.db")
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 Bootstrap(app)
 db = SQLAlchemy(app)
@@ -37,20 +33,26 @@ def load_user(user_id):
 
 
 class LoginForm(FlaskForm):
-    username = StringField('username', validators=[
-                           InputRequired(), Length(min=4, max=15)])
-    password = PasswordField('password', validators=[
-                             InputRequired(), Length(min=8, max=80)])
-    remember = BooleanField('remenber me')
+    username = StringField('Nombre de usuario', validators=[
+        InputRequired(),
+        Length(min=4, max=15)])
+    password = PasswordField('Contraseña', validators=[
+        InputRequired(),
+        Length(min=8, max=80)])
+    remember = BooleanField('Recuérdame')
 
 
 class RegisterForm(FlaskForm):
-    email = StringField('email', validators=[InputRequired(), Email(
-        message='Invalid email'), Length(max=50)])
-    username = StringField('username', validators=[
-                           InputRequired(), Length(min=4, max=15)])
-    password = PasswordField('password', validators=[
-                             InputRequired(), Length(min=8, max=80)])
+    email = StringField('Correo electrónico', validators=[
+        InputRequired(),
+        Email(message='Correo inválido'),
+        Length(max=50)])
+    username = StringField('Nombre de usuario', validators=[
+        InputRequired(),
+        Length(min=4, max=15)])
+    password = PasswordField('Contraseña', validators=[
+        InputRequired(),
+        Length(min=8, max=80)])
 
 
 @app.route('/')
@@ -67,7 +69,7 @@ def login():
             if check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember.data)
                 return redirect(url_for('dashboard'))
-        return '<h1> Invalid username or passoword </h1>'
+        return '<h1>Nombre de usuario o contraseña inválidos</h1>'
         # return'<h1>' + form.username.data + '' + form.password.data + '</h1>'
     return render_template('login.html', form=form)
 
@@ -82,7 +84,7 @@ def signup():
                         email=form.email.data, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
-        return '<h1>New user has been created!</h1>'
+        return '<h1>Tu usuario se ha creado exitosamente!</h1>'
         # return '<h1>' + form.username.data + ' ' + form.email.data + ' ' + form.password.data + '</h1>'
     return render_template('signup.html', form=form)
 
