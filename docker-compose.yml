@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  proyecto:
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    image: proyecto
+    container_name: proyecto
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+
+  proyecto_db:
+    build:
+        context: ./database
+        dockerfile: Dockerfile
+    image: proyecto_db
+    container_name: proyecto_db
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=pass_db
+    volumes:
+      - dbdata:/var/lib/mysql
+
+volumes:
+  dbdata:
