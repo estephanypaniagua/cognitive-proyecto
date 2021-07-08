@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, url_for
+from flask import Flask, render_template, redirect, request, url_for, session
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_sqlalchemy import SQLAlchemy
@@ -171,18 +171,50 @@ def components_add_form():
 
 @app.route('/components/update/<int:id>')
 def components_update(id: int):
-    # data=db.read(id)
-    # if len(data) == 0:
-    #     return redirect(url_for('usuario_index'))
+    components = Component.query.filter_by(id=id).all()
+    if not components or len(components) == 0:
+        return redirect(url_for('dashboard'))
+    session['update_component_id'] = id
+    return render_template('components/update.html', components=components)
 
-    # session['update'] = id
-    return render_template('components/update.html')
-    # return render_template('components/update.html',data=data)
+
+@app.route('/components/updatecomponents', methods=['POST'])
+def components_update_form():
+    if request.form['update']:
+        component_id = session['update_component_id']
+
+        name = request.form['name']
+        description = request.form['description']
+        quantity = request.form['quantity']
+
+        component = Component.query.get(component_id)
+
+        component.name = name
+        component.description = description
+        component.quantity = quantity
+        db.session.commit()
+
+        session.pop('update_component_id', None)
+        return redirect(url_for('dashboard'))
 
 
 @app.route('/components/delete/<int:id>')
-def components_delete():
-    return render_template('components/delete.html')
+def components_delete(id: int):
+    components = Component.query.filter_by(id=id).all()
+    if not components or len(components) == 0:
+        return redirect(url_for('dashboard'))
+    session['delete_component_id'] = id
+    return render_template('components/delete.html', components=components)
+
+
+@app.route('/components/deletecomponents', methods=['POST'])
+def components_delete_form():
+    if request.form['delete']:
+        component_id = session['delete_component_id']
+        component = Component.query.get(component_id)
+        db.session.delete(component)
+        db.session.commit()
+        return redirect(url_for('dashboard'))
 
 
 if __name__ == '__main__':

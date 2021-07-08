@@ -1,28 +1,70 @@
-{% extends 'layout.html' %}
+{% extends "bootstrap/base.html" %}
+
+{% block title %}
+Dashboard | Actualizar componente
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='css/dashboard.css')}}">
+{% endblock %}
 
 {% block content %}
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button
+        type="button"
+        class="navbar-toggle collapsed"
+        data-toggle="collapse"
+        data-target="#navbar"
+        aria-expanded="false"
+        aria-controls="navbar"
+      >
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{{ url_for('dashboard')}}">Laboratorio 414</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="{{ url_for('dashboard')}}">Dashboard</a></li>
+        <!-- <li><a href="#">Configuración</a></li>
+            <li><a href="#">Perfil</a></li> -->
+        <li><a href="{{ url_for('logout')}}">Cerrar sesión</a></li>
+      </ul>
+      <form class="navbar-form navbar-right">
+        <input type="text" class="form-control" placeholder="Search..." />
+      </form>
+    </div>
+  </div>
+</nav>
+
 <div class="container">
   <section class="content">
     <div class="box box-info">
       <div class="box-header with-border">
         <center>
-          <h3 class="box-title">Actualizar contacto</h3>
+          <h3 class="box-title">Actualizar componente</h3>
         </center>
       </div>
     </div>
 
-    <form class="form-horizontal" method="POST" action="/usuario/updateusuario">
-      {% for row in data %}
+    <form class="form-horizontal" method="POST" action="/components/updatecomponents">
+      {% for component in components %}
+
       <div class="box-body">
         <div class="form-group">
           <label class="col-sm-2 control-label">Nombre</label>
           <div class="col-sm-10">
             <input
-              name="nombre"
-              value="{{ row[1] }}"
+              value="{{ component.name }}"
+              name="name"
               type="text"
               class="form-control"
-              placeholder="Nombre"
+              placeholder="Nombre del componente"
               autocomplete="off"
               required
             />
@@ -30,14 +72,14 @@
         </div>
 
         <div class="form-group">
-          <label class="col-sm-2 control-label">Telefono</label>
+          <label class="col-sm-2 control-label">Descripción</label>
           <div class="col-sm-10">
             <input
-              name="telefono"
-              value="{{ row[2] }}"
+              value="{{ component.description }}"
+              name="description"
               type="text"
               class="form-control"
-              placeholder="Telefono"
+              placeholder="Descripción del componente"
               autocomplete="off"
               required
             />
@@ -45,14 +87,14 @@
         </div>
 
         <div class="form-group">
-          <label class="col-sm-2 control-label">Email</label>
+          <label class="col-sm-2 control-label">Cantidad</label>
           <div class="col-sm-10">
             <input
-              name="email"
-              value="{{ row[3] }}"
-              type="text"
+              value="{{ component.quantity }}"
+              name="quantity"
+              type="number"
               class="form-control"
-              placeholder="Email"
+              placeholder="Cantidad"
               autocomplete="off"
               required
             />
@@ -60,8 +102,8 @@
         </div>
 
         <div class="box-footer">
-          <a href="/usuario/"> <button type="button" class="btn btn-default">Cancel</button> </a>
-          <input type="submit" name="update" class="btn btn-info pull-right" value="Update" />
+          <a href="{{ url_for('dashboard')}}"> <button type="button" class="btn btn-default">Cancelar</button> </a>
+          <input type="submit" name="update" class="btn btn-info pull-right" value="Actualizar" />
         </div>
       </div>
       {% endfor %}
